@@ -73,6 +73,8 @@ const [inputEnterState, setInputEnterState] = useState('')
       // if(pathVolumesApi > 0 )
 
 
+
+      /// ZIFIR RESOLVENDO OS CARDS X MAPS X USEEFFECT 
   useEffect(() => {
 
     if(inputState !== '') {
