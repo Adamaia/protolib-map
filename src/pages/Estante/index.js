@@ -1,17 +1,25 @@
-import React from 'react';
-import { Icon } from '@mui/material';
+import React {useEffect, useState, useContext} from 'react';
+
+// ESTILOS, DESIGN SYSTEM, MUI, VISUAIS 
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+
+//CONTEXTUAIS 
+import GlobalState from '../../context/GlobalState'
+
+//PAGINAS E COMPONENTES VISUAIS..
+import { baseUriApi, volumePesquisadoDoInputApi, paramsKeyApi} from '../../constant/baseUriApi'
+
+//ROTAS ETC
+import {goToDetalhes} from "../routes/coordinator"
+import { useHistory } from "react-router";
 
 
-
-export default function AreaBusca() {
+export const Estante = () => {
 
     const divStyle = {
         color: 'gray',
@@ -24,6 +32,61 @@ export default function AreaBusca() {
         alignItems: 'center'
       };
   
+
+
+      
+//  AQUI COMECA A FUNCAO DA ESTANTE DE VERDADE - ESTANTE 
+
+    const history = useHistory();
+    const {states, setters, requests} = useContext(GlobalState)
+
+
+    const listaLivrosNaTela = states.estante && states.estante.length > 0 && states.estante.map((pokemon)=>{
+        return (
+
+            <Card style={{margin: '8px'}} >
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="260"
+                image={volume.volumeInfo.imageLinks.thumbnail}
+                // image={volume.thumbnail}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {volume.volumeInfo.title}
+                  {/* {volume.title} */}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                {volume.volumeInfo.authors}
+                {/* {volume.authors} */}
+                authors
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+
+            <CardActions>
+              <Button size="small" color="primary">
+                Adicionar na Estante !
+              </Button>
+              <Button size="small" color="primary">
+                + Detalhes
+              </Button>
+            </CardActions>
+        </Card>
+
+<CardPokedex 
+                    key={pokemon.name}
+                    name={pokemon.name}
+                    pokemon={pokemon}
+                />
+
+        ) 
+    })
+
+
+
+
     return ( 
 
         <div 

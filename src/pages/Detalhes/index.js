@@ -1,18 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import { useContext, useEffect, useState } from "react"
+import GlobalState from '../../context/GlobalState';
 
-import GlobalState from '../../context/GlobalState'
-
-
-
-
-import AreaLivros from '../../components/CardEstante';
-import Buscar from '../../components/Buscar';
-
-
-export const home = () => {
-
-
-  const { states, setters, requests } = useContext(GlobalState)
+export const Detalhes = () => {
 
     const divStyle = {
         color: 'white',
@@ -39,4 +30,3 @@ export const home = () => {
 
     )
 }
-

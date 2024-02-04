@@ -9,7 +9,8 @@ import ResponsiveAppBar from './components/HeaderMui'
 //import Home from './pages/Home'
 // import Teste from './pages/Teste'
 import Resultados from "./pages/Resultados";
-
+import GlobalState from "./context/GlobalState";
+import Home from "./pages/Home"
 
 export default function App() {
 
@@ -25,17 +26,13 @@ export default function App() {
 
 
   return (  
-    <LivrosProvider>
-
     <div className="App" style={appStyle}>
-     
-
-      
-
-      
+      <GlobalState>
         <p> EM AMARELO, AREA DO APP.JS - OU SEJA INICIO DE TD</p>
         <ResponsiveAppBar />
-        <Resultados />
+        <Home />
+    </GlobalState>
     </div>
-  </LivrosProvider>
   )}
+
+

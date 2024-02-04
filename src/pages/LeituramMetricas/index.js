@@ -11,7 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 
 
-export default function AreaBusca() {
+export default function LeituraMetricas() {
 
     const divStyle = {
         color: 'gray',

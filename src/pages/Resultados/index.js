@@ -8,8 +8,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import AreaBusca from '../../components/AreaLivros';
-import AreaLivros from '../../components/AreaLivros';
+import AreaBusca from '../../components/CardEstante';
+import AreaLivros from '../../components/CardEstante';
 import Buscar from '../../components/Buscar';
 
 import Card from '@mui/material/Card';
@@ -27,7 +27,25 @@ import { useLivros, useLivrosDespacho } from '../../context/LivrosContext';
 import axios from 'axios'
 
 
-export default function Resultados() {
+export const RequestApi = () => {
+
+  const [apiRetornoState, setApiRetornoState] = useState({})
+
+
+  const listaLivrosFromApi = async () => {
+    try {
+      const response = await axios.get(`compostoAPi`);
+      setApiRetornoState(response.data)
+    } catch (erro) {
+      console.log("Erro", erro); 
+    }
+  }
+
+  
+}
+
+export default Resultados = () => {
+
 
     const divStyle = {
         color: 'white',
@@ -38,7 +56,7 @@ export default function Resultados() {
         display: 'flex', 
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center', 
         padding: '12px'
       };
   
@@ -48,13 +66,12 @@ export default function Resultados() {
 
 //  *********  PARTE DA API **********
 
-const [responseState, setResponseState] = useState({})
-const [itemsState, setItemsState] = useState([])
-const [pesquisaState, setPesquisaState] = ([])
+  const [itemsApiState, setItemsApiState] = useState([])
+  const [itemsApiCloneState, setItemsApiCloneState] = ([])
 
-const [inputState, setInputState] = useState('')
-const [digitadoState, setDigitadoState] = useState('')
-const [inputEnterState, setInputEnterState] = useState('')
+  const [inputState, setInputState] = useState('')
+  const [digitadoState, setDigitadoState] = useState('')
+  const [inputEnterState, setInputEnterState] = useState('')
 
 
 
@@ -64,7 +81,7 @@ const [inputEnterState, setInputEnterState] = useState('')
   const pathVolumesApi = inputState
   const paramsVolumeApi = "&projection=lite&maxResult=40"
   const keyApi = "&key=AIzaSyA-suusdQ6Zg-CofyfgNBGdg7PJybk3f_A"
-  const compostoAPi = `${baseApi}${colecaoApi}${pathVolumesApi}${paramsVolumeApi}${keyApi}`
+  const compostoUriAPi = `${baseApi}${colecaoApi}${pathVolumesApi}${paramsVolumeApi}${keyApi}`
 
   // ${baseApi} -> Texto dinamico dentro de um string format . No ${} vem a variavel -> ${ variavel }
   // const apiTemp = "https://www.googleapis.com/books/v1/volumes?q=flowers&key=AIzaSyA-suusdQ6Zg-CofyfgNBGdg7PJybk3f_A&projection=lite&#maxResult=40"
@@ -73,51 +90,21 @@ const [inputEnterState, setInputEnterState] = useState('')
       // if(pathVolumesApi > 0 )
 
 
-  useEffect(() => {
-
-    if(inputState !== '') {
-
-      axios.get(compostoAPi).then((response) => {
-
-          setResponseState(response.data)
-      });
-      
-    }
-
-  },[inputState])
- 
-
-
-  //impedir este de ir sozinho... 
-  useEffect(() => {
-    if( itemsState !== responseState.items ) {
-
-      setItemsState(responseState.items)
-    }
-
-  },[itemsState])
-
-
-// pro map ficar bom...
-  // useEffect(() => {
-
-  //   if(digitadoState !== '' && itemsState > 0 ) {
-
-  //     pesquisaState(itemsState)
-  //   }
-
-  // },[ digitadoState, itemsState])
+    
 
 
 
-
+ // REGRAS useEffect 
   // sem-regras -vazio- Quando ta montANDO: -> Nao tem Colchetes -> Logo Inicio mesmo montando.
   // 1x [] - Quando ta montADO, e roda 1x só -> colchetes vazio -> Ja temos o balcao pronto (app montado, renderizou td)
   // 99x [responseData] Quando é pra atualizar Muitas VEZES -> colchete com as constantes que sofrem mudança...
 
 
-  if (!responseState) return null;
 
+  // if (!apiRetornoState) return null;
+
+
+  
 
 // ******* FIM logica da API ***********
       
@@ -134,35 +121,26 @@ const [inputEnterState, setInputEnterState] = useState('')
           { id: 1, title: 'O lado feio do amor', authors: 'Collen Hoover', thumbnail: 'https://d38h3sy5jr28pf.cloudfront.net/capas-livros/9788501112514-colleen-hoover-priscila-catao-e-assim-que-acaba-2709596205.jpg' },
         ]
     
-      // if( digitadoState === ''  ) {
-      //   listarLivrosOpts = inicialLivros
-      // } else {
-      //   listarLivrosOpts = itemsState
-      // }
 
 
-        const listarLivrosNoCard = itemsState === responseState.items && itemsState.map((volume) => {
+        const listarLivrosNoCard = itemsApiState && itemsApiState > 0 && itemsApiState.map((volume) => {
 
           return (
               <Card style={{margin: '8px'}} >
                   <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="260"
-                      image={volume.volumeInfo.imageLinks.thumbnail}
-                      // image={volume.thumbnail}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {volume.volumeInfo.title}
-                        {/* {volume.title} */}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                      {volume.volumeInfo.authors}
-                      {/* {volume.authors} */}
-                      authors
-                      </Typography>
-                    </CardContent>
+                        <CardMedia
+                              component="img"
+                              height="260"
+                                    image={volume.volumeInfo.imageLinks.thumbnail}
+                        />
+                        <CardContent>
+                              <Typography gutterBottom variant="h5" component="div" >
+                                    title: {volume.volumeInfo.title}
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                    authors: {volume.volumeInfo.authors} 
+                              </Typography>
+                        </CardContent>
                   </CardActionArea>
   
                   <CardActions>
@@ -178,6 +156,16 @@ const [inputEnterState, setInputEnterState] = useState('')
       })
   
 
+
+
+
+      useEffect(()=>{
+        listaLivrosFromApi();
+        // setItemsApiState(apiRetornoState.items)
+        // itemsApiCloneState(apiRetornoState.items)
+    
+    },[listaLivrosFromApi])
+    
 
     
 
@@ -198,14 +186,7 @@ const [inputEnterState, setInputEnterState] = useState('')
     };
     
 
-    // const handleKey = (event) => {
-    //   if (event.key === "Enter") {
-    //     console.log("tecla enter apertada");
-    //     console.log(inputState);
-    //     setInputEnterState(event.target.value)
-    //   }
-    // }
-
+    
 
     return ( 
 
@@ -250,7 +231,13 @@ const [inputEnterState, setInputEnterState] = useState('')
 
 
                           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                          <IconButton 
+                            type="button" 
+                            sx= "ok" 
+                            aria-label="search"
+
+                          >
+
 
                               <SearchIcon />
                           </IconButton>
@@ -288,11 +275,11 @@ const [inputEnterState, setInputEnterState] = useState('')
 
 
                {console.log("abaixo, o endereco da busca completa")}
-         {console.log(compostoAPi)}
+         {console.log(compostoUriAPi)}
                 {console.log("abaixo, responseState, ou seja, TD")}
-        {console.log(responseState)}
+        {console.log(apiRetornoState)}
                    {console.log("abaixo, itemState, o mesmo q o de cima ponto items")}
-        {console.log(itemsState)}
+        {console.log(itemsApiState)}
                   {console.log("abaixo, o inputState")}
         {console.log(inputState)}
 
