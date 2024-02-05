@@ -58,7 +58,7 @@ const { id, livro } = props;
                     //poke
 const pegarlivro = (livro) => {
         //acessa a api books, procura pelo titulo e verifica se o livro encontrado é igual ao livro que está na api
-        const index = states.booksApi.findIndex((i) => i.title === livro.title);
+        const index = states.booksApi.findIndex((i) => i.id === livro.id);
         console.log("index", index);
 
         //remove o livro da lista de livros
@@ -66,9 +66,9 @@ const pegarlivro = (livro) => {
             //ussa a mesma lógica de reitar para criar um array novo que será renderizado na pagina de minhaEstante que terá o livro de index 0
             let novaEstante = [...states.estante,livro];
             setters.setEstante(novaEstante);
-            alert(`${livro.title} foi adicionado ao sua Estante!`);
+            alert(`${livro.id} foi adicionado ao sua Estante!`);
         }else{
-            alert(`${livro.title} ja adicionado!`);
+            alert(`${livro.id} ja adicionado!`);
         }
     }
 
