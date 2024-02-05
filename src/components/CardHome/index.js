@@ -36,47 +36,109 @@ import { volumeIdApi, keyApi  } from '../../constant/uriApi'
 
 export default function CardLivro() {
   
-export default function CardPokemon(props) {
+export default function CardLivroHome(props) {
 
 
 const {states, setters, requests} = useContext(GlobalStateContext)
 const history = useHistory();
-const [fotoPokemon, setFotoPokemon] = useState([])
-const { name, pokemon } = props;
+const [capaLivro, setCapaLivro] = useState([])
+const { id, livro } = props;
 
-const pegaInformacoesPokemon = async () => {
-    try {
-        const response = await axios.get(`${UrlBase}/${name}`)
-        setFotoPokemon(response.data.sprites.versions['generation-v']['black-white'].animated.front_default)
-    } catch (erro) {
-        console.log("Erro", erro);
+
+//FUNÇÃO QUE PEGA IMAGEN, IREMOS USA-LA?????????
+
+// const pegaInformacoesPokemon = async () => {
+//     try {
+//         const response = await axios.get(`${UrlBase}/${id}`)
+//         setCapaLivro(response.data.sprites.versions['generation-v']['black-white'].animated.front_default)
+//     } catch (erro) {
+//         console.log("Erro", erro);
+//     }
+}
+                    //poke
+const pegarlivro = (livro) => {
+        //acessa a api books, procura pelo titulo e verifica se o livro encontrado é igual ao livro que está na api
+        const index = states.booksApi.findIndex((i) => i.title === livro.title);
+        console.log("index", index);
+
+        //remove o livro da lista de livros
+        if (index !== -1) { 
+            //ussa a mesma lógica de reitar para criar um array novo que será renderizado na pagina de minhaEstante que terá o livro de index 0
+            let novaEstante = [...states.estante,livro];
+            setters.setEstante(novaEstante);
+            alert(`${livro.title} foi adicionado ao sua Estante!`);
+        }else{
+            alert(`${livro.title} ja adicionado!`);
+        }
     }
+
+    useEffect(() => {
+        pegarlivro();
+    }, [])
+
+    return (
+        <div 
+        style={divStyle} 
+        nomedaDiv="Card Home"
+      >
+    <Card style={{margin: '8px'}} >
+    <CardActionArea>
+                        <CardMedia
+                              component="img"
+                              height="260"
+                                    image={volume.volumeInfo.imageLinks.thumbnail}
+                        />
+                        <CardContent>
+                              <Typography gutterBottom variant="h5" component="div" >
+                                    title: {volume.volumeInfo.title}
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                    authors: {volume.volumeInfo.authors} 
+                              </Typography>
+                        </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                          <Button 
+                              size="small" 
+                              color="primary"
+                              onClick={() => pegarlivro(livro)}
+                          >
+                                Adicionar a Minha Estante
+                          </Button>
+                          <Button 
+                              size="small" 
+                              color="primary"
+                              NESTE LUGAR ESTA O QUE DEFINE QUAL SERA MOSTRADO EM DETALHES
+                              onClick={() => goToDetalhes(history, id)}
+                          >
+                                + Detalhes
+                          </Button>
+
+                  </CardActions>
+
+          <Nome>{id}</Nome>
+          <Img src={fotoPokemon} />
+          <Buttons>
+              <Pegar 
+                onClick={() => pegarlivro(livro)}
+              >
+                deletar
+              </Pegar>
+              <Detalhes 
+                onClick={() => goToDetalhesPage(history,id)}
+              >
+                Detalhes
+              </Detalhes>
+          </Buttons>
+    </Card>
+
+
+
+        </div> 
+ 
+    )
 }
 
-const pegarPokedex = (poke) => {
-    const index = states.pokemonsApi.findIndex((i) => i.name === poke.name);
-    console.log("index",index);
-    if (index !== -1) {
-        let novoPokemon = [...states.pokedex,poke];
-        setters.setPokedex(novoPokemon);
-        alert(`${poke.name} foi adicionado ao sua pokedex!`);
-    }else{
-        alert(`${poke.name} ja adicionado!`);
-    }
-}
 
-useEffect(() => {
-    pegaInformacoesPokemon();
-}, [])
 
-return (
-    <CardPoke>
-            <Nome>{name}</Nome>
-            <Img src={fotoPokemon} />
-        <Buttons>
-            <Pegar onClick={() =>pegarPokedex(pokemon)}>Pegar</Pegar>
-            <Detalhes onClick={() => goToDetalhesPage(history,name)}>Detalhes</Detalhes>
-        </Buttons>
-    </CardPoke>
-)
-}
+
